@@ -8,11 +8,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  socket-scan:
+  scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -32,19 +34,16 @@ jobs:
             echo "::error::Missing SOCKET_SECURITY_API_TOKEN secret"
             exit 1
           fi
-
-          # Run reachability scan
           socket scan create \
             --reach \
             --org "${SOCKET_ORG_SLUG}" \
             --repo "${GITHUB_REPOSITORY##*/}" \
             --branch "${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}" \
             --json \
-            .
+            . | tee scan_report.json
 
       - name: Upload scan results
         uses: actions/upload-artifact@v4
         with:
           name: socket-scan-report
-          path: socket-scan-report.json
-          if-no-files-found: ignore
+          path: scan_report.json
