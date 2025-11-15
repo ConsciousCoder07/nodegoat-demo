@@ -1,0 +1,37 @@
+name: Vorpal Code Scan
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  vorpal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vorpal with reviewdog
+        uses: checkmarx/vorpal-reviewdog-github-action@v1.2.0
+        with:
+          source_path: '.'
+          filter_mode: file
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-check
+          level: error
+          fail_on_error: false
+
+      - name: Prepare Vorpal artifact
+        if: always()
+        run: |
+          if [ -f vorpal-results.json ]; then
+            echo "Found vorpal-results.json, moving to artifacts/"
+            mkdir -p artifacts
+            mv vorpal-results.json artifacts/
+          else
+            echo "No vorpal-results.json produced by the action"
+          fi
+
+      - name: Upload Vorpal results as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vorpal-results
+          path: artifacts/*
