@@ -11,7 +11,7 @@ jobs:
 
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Mkdir kics-result
       # make sure results dir is created
       run: mkdir -p kics-result
@@ -22,7 +22,7 @@ jobs:
         path: '.'
         output_formats: 'json,html'
         output_path: kics-result
-        
+
     # Display the results in json format
     - name: display kics results
       if: always()
@@ -35,7 +35,7 @@ jobs:
     
     - name: Upload KICS HTML report (artifact)
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: kics-html-report
         path: kics-result/*.html
