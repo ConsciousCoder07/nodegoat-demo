@@ -19,7 +19,7 @@ jobs:
     - name: run kics Scan
       uses: checkmarx/kics-github-action@v2.1.15
       with:
-        path: '.'
+        path: 'terraform,Dockerfile'
         output_formats: 'json,html'
         output_path: kics-result
 
@@ -33,10 +33,10 @@ jobs:
           echo "kics results.json not found"
         fi
     
-    - name: Upload KICS HTML report (artifact)
+    - name: Upload KICS report (artifact)
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: kics-html-report
-        path: kics-result/*.html
+        name: kics-report
+        path: kics-result/*
 

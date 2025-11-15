@@ -1,18 +1,25 @@
+# Outdated and vulnerable Node version
 FROM node:12-alpine
-ENV WORKDIR /usr/src/app/
-WORKDIR $WORKDIR
-COPY package*.json $WORKDIR
-RUN npm install --production --no-cache
 
-FROM node:12-alpine
-ENV USER node
-ENV WORKDIR /home/$USER/app
+# Insecure environment variables with secrets
+ENV WORKDIR=/usr/src/app/
+ENV API_KEY="12345-SECRET-KEY"
+ENV PASSWORD="superweakpassword"
+
+# Work as root by default (no USER instruction)
 WORKDIR $WORKDIR
-COPY --from=0 /usr/src/app/node_modules node_modules
-RUN chown $USER:$USER $WORKDIR
-COPY --chown=node . $WORKDIR
-# In production environment uncomment the next line
-#RUN chown -R $USER:$USER /home/$USER && chmod -R g-s,o-rx /home/$USER && chmod -R o-wrx $WORKDIR
-# Then all further actions including running the containers should be done under non-root user.
-USER $USER
+
+# Copy everything (including possibly sensitive files)
+COPY . .
+
+# Install production dependencies using npm (no lockfile, no pinning)
+RUN npm install --production
+
+# Hardcoded secret written into an unsafe file
+RUN echo "db_password=12345" > /usr/src/app/secret.txt
+
+# Expose unnecessary ports (attack surface)
+EXPOSE 22
 EXPOSE 4000
+
+CMD ["node", "app.js"]
