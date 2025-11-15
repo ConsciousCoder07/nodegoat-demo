@@ -1,0 +1,42 @@
+name: KICS IaC Scan
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  kics-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - name: Mkdir kics-result
+      # make sure results dir is created
+      run: mkdir -p kics-result
+    # Scan Iac with kics
+    - name: run kics Scan
+      uses: checkmarx/kics-github-action@latest
+      with:
+        path: '.'
+        output_formats: 'json,html'
+        output_path: kics-result
+        
+    # Display the results in json format
+    - name: display kics results
+      if: always()
+      run: |
+        if [ -f kics-result/results.json ]; then
+          cat kics-result/results.json
+        else
+          echo "kics results.json not found"
+        fi
+    
+    - name: Upload KICS HTML report (artifact)
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: kics-html-report
+        path: kics-result/*.html
+
