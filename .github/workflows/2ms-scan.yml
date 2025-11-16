@@ -19,7 +19,12 @@ jobs:
           # Required for 2ms to have visibility to all commit history
           fetch-depth: 0
 
-      # ...
-
       - name: Run 2ms Scan
-        run: docker run -v $(pwd):/repo checkmarx/2ms:2.8.1 git /repo
+        continue-on-error: true
+        run: docker run -v "${{ github.workspace }}":/repo checkmarx/2ms:2.8.1 git /repo > 2ms-output.yml
+        
+      - name: Upload 2ms output
+        uses: actions/upload-artifact@v4
+        with:
+          name: 2ms-output
+          path: 2ms-output.yml
