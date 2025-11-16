@@ -2,7 +2,11 @@ name: KICS IaC Scan
 
 on:
   push:
+    branches:
+      - kics
   pull_request:
+    branches:
+      - kics
   workflow_dispatch:
 
 jobs:

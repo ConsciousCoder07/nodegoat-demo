@@ -1,8 +1,14 @@
 name: Vorpal Code Scan
+
 on:
   push:
+    branches:
+      - vorpal
   pull_request:
+    branches:
+      - vorpal
   workflow_dispatch:
+    
 jobs:
   vorpal:
     runs-on: ubuntu-latest
