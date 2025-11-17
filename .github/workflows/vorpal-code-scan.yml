@@ -27,7 +27,7 @@ jobs:
         with:
           source_path: "${{ steps.changed-files.outputs.all_changed_files }}"
           filter_mode: file
-          github_token: ${{ secrets.github_token }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-check
           level: error
           fail_on_error: false
