@@ -24,11 +24,11 @@ jobs:
     - name: run kics Scan
       uses: checkmarx/kics-github-action@v2.1.15
       with:
-        path: 'terraform'
+        path: 'terraform,Dockerfile'
         output_formats: 'json,html,sarif'
         output_path: kics-result
         fail_on: critical
-        ignore_on_exit: true
+        # ignore_on_exit: true
 
     # Display the results in json format
     - name: display kics results
@@ -36,7 +36,6 @@ jobs:
       run: |
         echo "LIST KICS SCAN ARTIFACTS:"
         ls -la kics-result || true
-
         if [ -f kics-result/results.json ]; then
           cat kics-result/results.json
         else
