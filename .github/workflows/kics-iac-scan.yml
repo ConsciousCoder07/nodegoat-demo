@@ -24,7 +24,7 @@ jobs:
     - name: run kics Scan
       uses: checkmarx/kics-github-action@v2.1.15
       with:
-        path: 'infra'
+        path: 'terraform'
         output_formats: 'json,html,sarif'
         output_path: kics-result
         fail_on: critical
