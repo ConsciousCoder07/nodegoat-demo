@@ -1,48 +1,60 @@
-name: KICS IaC Scan
+name: Vorpal Code Quality Scan
 
 on:
   push:
+    branches:
+      - vorpal
   pull_request:
+    branches:
+      - vorpal
   workflow_dispatch:
 
 jobs:
-  kics-scan:
+  vorpal:
     runs-on: ubuntu-latest
-
     steps:
+      # 1️⃣ Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - uses: actions/checkout@v4
-    - name: Mkdir kics-result
-      # make sure results dir is created
-      run: mkdir -p kics-result
+      # 2️⃣ Get changed files
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46.0.1
+        with:
+          separator: ','
 
-    # Scan Iac with kics
-    - name: run kics Scan
-      uses: checkmarx/kics-github-action@v2.1.15
-      with:
-        path: 'terraform,Dockerfile'
-        output_formats: 'json,html,sarif'
-        output_path: kics-result
-        fail_on: critical
-        ignore_on_exit: true
+      # 3️⃣ Debug changed files
+      - name: Debug changed files
+        run: |
+          echo "All changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
 
-    # Display the results in json format
-    - name: display kics results
-      if: always()
-      run: |
-        echo "LIST KICS SCAN ARTIFACTS:"
-        ls -la kics-result || true
+      # 4️⃣ Filter supported files for Vorpal (JS, PY, Java, Go, C#)
+      - name: Filter supported files
+        id: supported-files
+        run: |
+          SUPPORTED=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ',' '\n' | grep -E '\.js$|\.jsx$|\.py$|\.java$|\.go$|\.cs$' | paste -sd "," -)
+          echo "supported_files=$SUPPORTED" >> $GITHUB_OUTPUT
+          echo "Filtered supported files: $SUPPORTED"
 
-        if [ -f kics-result/results.json ]; then
-          cat kics-result/results.json
-        else
-          echo "kics results.json not found"
-        fi
-    
-    - name: Upload KICS report (artifacts)
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: kics-report
-        path: kics-result/*
+      # 5️⃣ Debug each file line by line
+      - name: Print each supported file
+        run: |
+          echo "${{ steps.supported-files.outputs.supported_files }}" | tr ',' '\n'
 
+      # 6️⃣ Run Vorpal scan only if there are supported files
+      - name: Vorpal with Reviewdog
+        if: ${{ steps.supported-files.outputs.supported_files != '' }}
+        uses: checkmarx/vorpal-reviewdog-github-action@v1.2.0
+        with:
+          source_path: "."
+          filter_mode: file
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-check
+          level: error
+          fail_on_error: false
+
+      # 7️⃣ Debug if no supported files
+      - name: No supported files found
+        if: ${{ steps.supported-files.outputs.supported_files == '' }}
+        run: echo "No supported files found for Vorpal scan."
