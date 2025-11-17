@@ -1,8 +1,3 @@
-/**
- * Sample code to test Checkmarx/Vorpal security scanning capabilities
- * This file contains various security vulnerabilities and bad practices
- */
-
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
