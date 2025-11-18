@@ -3,10 +3,10 @@ name: Vorpal Code Quality Scan
 on:
   push:
     branches:
-      - vorpal
+      - master
   pull_request:
     branches:
-      - vorpal
+      - master
   workflow_dispatch:
 
 jobs:
