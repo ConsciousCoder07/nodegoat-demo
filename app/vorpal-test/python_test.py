@@ -45,9 +45,9 @@ def vulnerable_sql():
         return str(e)
 
 
-# ===========================
+# ============================
 # 2. COMMAND INJECTION VULNERABILITY
-# ===========================
+# ============================
 @app.route('/vulnerable-exec')
 def vulnerable_exec():
     """BAD: Direct user input in shell command"""

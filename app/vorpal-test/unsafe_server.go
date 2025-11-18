@@ -28,9 +28,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// ===========================
+// ============================
 // 1. HARDCODED CREDENTIALS
-// ===========================
+// ============================
 const (
 	DB_HOST       = "localhost"
 	DB_USER       = "admin"                              // BAD: Hardcoded username

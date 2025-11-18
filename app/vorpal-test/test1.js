@@ -276,9 +276,9 @@ function oldHashFunction(password) {
   return crypto.createHash('sha1').update(password).digest('hex');
 }
 
-// ===========================
+// ============================
 // 19. HARDCODED DATABASE CONNECTION
-// ===========================
+// ============================
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',

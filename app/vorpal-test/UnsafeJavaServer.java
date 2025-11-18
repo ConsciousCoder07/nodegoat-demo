@@ -17,9 +17,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 public class UnsafeJavaServer {
 
-    // ===========================
+    // ============================
     // 1. HARDCODED CREDENTIALS
-    // ===========================
+    // ============================
     private static final String DB_HOST = "localhost";
     private static final String DB_USER = "admin"; // BAD: Hardcoded username
     private static final String DB_PASSWORD = "SuperSecretPassword123!"; // BAD: Hardcoded password

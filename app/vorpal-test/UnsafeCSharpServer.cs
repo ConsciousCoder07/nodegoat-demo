@@ -21,9 +21,9 @@ using Microsoft.AspNetCore.Http;
 
 public class UnsafeCSharpServer : ControllerBase
 {
-    // ===========================
+    // ============================
     // 1. HARDCODED CREDENTIALS
-    // ===========================
+    // ============================
     private const string DB_HOST = "localhost";
     private const string DB_USER = "admin"; // BAD: Hardcoded username
     private const string DB_PASSWORD = "SuperSecretPassword123!"; // BAD: Hardcoded password
