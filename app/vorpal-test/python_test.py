@@ -90,9 +90,9 @@ DB_CONFIG = {
     'database': 'myapp_db'
 }
 
-API_KEY = 'sk_live_51234567890abcdefghijk'  # BAD: Hardcoded API key
-SECRET_TOKEN = 'my-super-secret-key-123'  # BAD: Hardcoded secret
-JWT_SECRET = 'super_secret_jwt_key_12345'  # BAD: Hardcoded JWT secret
+API_KEY = 'sk_live_51234567890abcdefghijk'  
+SECRET_TOKEN = 'my-super-secret-key-123'  
+JWT_SECRET = 'super_secret_jwt_key_12345'  
 
 # ===========================
 # 5. WEAK CRYPTOGRAPHY

@@ -66,12 +66,12 @@ app.get('/vulnerable-file-read', (req, res) => {
 const DB_CONFIG = {
   host: 'localhost',
   user: 'admin',
-  password: 'SuperSecretPassword123!', // BAD: Hardcoded password
+  password: 'SuperSecretPassword123!', 
   database: 'myapp_db'
 };
 
-const API_KEY = 'sk_live_51234567890abcdefghijk'; // BAD: Hardcoded API key
-const SECRET_TOKEN = 'my-super-secret-key-123'; // BAD: Hardcoded secret
+const API_KEY = 'sk_live_51234567890abcdefghijk'; 
+const SECRET_TOKEN = 'my-super-secret-key-123'; 
 
 // ===========================
 // 5. WEAK CRYPTOGRAPHY
