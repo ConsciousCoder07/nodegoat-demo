@@ -13,38 +13,40 @@ jobs:
   vorpal:
     runs-on: ubuntu-latest
     steps:
-      # 1️⃣ Checkout the repository
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Get changed files
+      # Get changed files
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v46.0.1
         with:
           separator: ','
 
-      # 3️⃣ Debug changed files
-      - name: Debug changed files
+      # Debug changed files
+      - name: Debug and print changed files
         run: |
-          echo "All changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
+          ALL_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+          echo "All changed files: $ALL_FILES"
+          echo -e "\nTotal changed files: $(echo "$ALL_FILES" | tr ',' '\n' | grep -c .)"
+          echo -e "\nPRINT EACH CHANGED FILE:"
+          echo "$ALL_FILES" | tr ',' '\n'
 
-      # 4️⃣ Filter supported files for Vorpal (JS, PY, Java, Go, C#)
+      # Filter supported files for Vorpal (JS, PY, Java, Go, C#)
       - name: Filter supported files
         id: supported-files
         run: |
           SUPPORTED=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ',' '\n' | grep -E '\.js$|\.jsx$|\.py$|\.java$|\.go$|\.cs$' | paste -sd "," -)
           echo "supported_files=$SUPPORTED" >> $GITHUB_OUTPUT
           echo "Filtered supported files: $SUPPORTED"
+          echo -e "\nTotal supported files: $(echo "$SUPPORTED" | tr ',' '\n' | grep -c .)"
+          echo -e "\nPRINT EACH SUPPORTED FILE:"
+          echo "$SUPPORTED" | tr ',' '\n'
 
-      # 5️⃣ Debug each file line by line
-      - name: Print each supported file
-        run: |
-          echo "${{ steps.supported-files.outputs.supported_files }}" | tr ',' '\n'
-
-      # 6️⃣ Run Vorpal scan only if there are supported files
+      # Run Vorpal scan only if there are supported files
       - name: Vorpal with Reviewdog
-        if: ${{ steps.supported-files.outputs.supported_files != '' }}
+        if: ${{ steps.changed-files.outputs.all_changed_files }}
         uses: checkmarx/vorpal-reviewdog-github-action@v1.2.0
         with:
           source_path: "."
@@ -53,8 +55,3 @@ jobs:
           reporter: github-pr-check
           level: error
           fail_on_error: false
-
-      # 7️⃣ Debug if no supported files
-      - name: No supported files found
-        if: ${{ steps.supported-files.outputs.supported_files == '' }}
-        run: echo "No supported files found for Vorpal scan."

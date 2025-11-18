@@ -282,7 +282,7 @@ function oldHashFunction(password) {
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'root123', // BAD: Hardcoded password
+  password: 'root123', 
   database: 'test_db'
 });
 
