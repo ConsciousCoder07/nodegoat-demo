@@ -47,7 +47,7 @@ jobs:
         if: ${{ steps.supported-files.outputs.supported_files != '' }}
         uses: checkmarx/vorpal-reviewdog-github-action@v1.2.0
         with:
-          source_path: "."
+          source_path: "${{ steps.changed-files.outputs.all_changed_files }}"
           filter_mode: file
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-check
