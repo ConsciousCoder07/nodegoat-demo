@@ -27,7 +27,7 @@ jobs:
         path: 'terraform,Dockerfile'
         output_formats: 'json,html,sarif'
         output_path: kics-result
-        fail_on: critical
+        fail_on: critical,high
         # ignore_on_exit: true
 
     # Display the results in json format

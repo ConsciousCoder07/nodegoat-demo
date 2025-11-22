@@ -170,9 +170,9 @@ app.post('/vulnerable-login', (req, res) => {
   }
 });
 
-// ===========================
+// ==========================
 // 11. RACE CONDITION
-// ===========================
+// ==========================
 app.post('/vulnerable-transfer', (req, res) => {
   const userId = req.body.userId;
   const amount = req.body.amount;

@@ -61,9 +61,9 @@ def vulnerable_exec():
     return result.decode('utf-8')
 
 
-# ===========================
+# ============================
 # 3. PATH TRAVERSAL VULNERABILITY
-# ===========================
+# ============================
 @app.route('/vulnerable-file-read')
 def vulnerable_file_read():
     """BAD: No validation of file path"""
