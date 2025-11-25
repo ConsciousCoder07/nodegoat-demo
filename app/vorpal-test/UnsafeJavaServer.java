@@ -345,9 +345,9 @@ public class UnsafeJavaServer {
         }
     }
 
-    // ============================
+    // =============================
     // 21. INSECURE HTTP SERVER BINDING
-    // ============================
+    // =============================
     public static void startInsecureServer() throws IOException {
         // BAD: Binding to 0.0.0.0 makes server accessible from any network interface
         HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 8080), 0);

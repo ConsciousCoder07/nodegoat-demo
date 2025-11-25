@@ -1,0 +1,12 @@
+repos:
+- repo: local
+  hooks:
+  - id: 2ms
+    name: Too Many Secrets (2ms)
+    entry: cmd
+    args: ['/c', 'call run-2ms-docker.bat']
+    language: system
+    pass_filenames: false
+    files: '(?x)(
+      .*.go$|.*.js$|.*.jsx$|.*.ts$|.*.tsx$|.*.py$|.*.java$|.*.c$|.*.cpp$|.*.cs$|.*.swift$|.*.php$|.*.rb$|.*.yaml$|.*.yml$|.*.json$|.*.xml$|.*.toml$|.*.ini$|.*.cfg$|.*.conf$|.*.properties$|.*.sh$|.*.bash$|.*.ps1$|.*.txt$|.*.md$
+    )'
